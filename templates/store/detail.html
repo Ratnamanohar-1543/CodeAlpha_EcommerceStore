@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}
+<div class="row"><img src="{{ p.image_url }}" alt="" style="width:100%;max-width:520px;border-radius:16px">
+<div class="panel" style="flex:1;min-width:280px"><small>{{ p.category }}</small><h1 style="margin:6px 0">{{ p.name }}</h1>
+<div class="star">★ {{ p.rating }} / 5</div><p>{{ p.description }}</p>
+<p><span class="price" style="font-size:1.8rem">₹{{ p.price }}</span>{% if p.old_price %}<span class="old">₹{{ p.old_price }}</span> <b style="color:#16a34a">{{ p.discount }}% off</b>{% endif %}</p>
+<p>{% if p.stock %}✅ In stock ({{ p.stock }}){% else %}❌ Out of stock{% endif %}</p><a class="btn" href="{% url 'cart_add' p.pk %}">Add to cart</a></div></div>
+<h2>You may also like</h2><div class="grid">{% for r in related %}<a class="card" href="{% url 'detail' r.pk %}"><img src="{{ r.image_url }}" alt=""><div class="b"><h3>{{ r.name }}</h3><span class="price">₹{{ r.price }}</span></div></a>{% endfor %}</div>{% endblock %}

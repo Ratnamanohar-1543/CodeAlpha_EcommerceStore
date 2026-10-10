@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block hero %}{% if not cat and not q %}<div class="hero"><h1>Big Savings. Everyday Style.</h1><p>50+ products across 10 categories · Free delivery over ₹999</p></div>{% endif %}{% endblock %}
+{% block content %}
+<div class="pills"><a href="{% url 'home' %}" class="{% if not cat %}on{% endif %}">All</a>
+{% for c in cats %}<a href="?cat={{ c }}" class="{% if c == cat %}on{% endif %}">{{ c }}</a>{% endfor %}</div>
+<form style="max-width:220px;margin-bottom:16px"><input type="hidden" name="cat" value="{{ cat }}"><input type="hidden" name="q" value="{{ q }}">
+<select name="sort" onchange="this.form.submit()"><option value="">Sort: Featured</option><option value="low" {% if sort == 'low' %}selected{% endif %}>Price: Low to High</option>
+<option value="high" {% if sort == 'high' %}selected{% endif %}>Price: High to Low</option><option value="top" {% if sort == 'top' %}selected{% endif %}>Top Rated</option></select></form>
+<div class="grid">{% for p in products %}<div class="card">{% if p.discount %}<span class="off">{{ p.discount }}% OFF</span>{% endif %}
+<a href="{% url 'detail' p.pk %}"><img src="{{ p.image_url }}" alt="{{ p.name }}" loading="lazy"></a><div class="b">
+<h3><a href="{% url 'detail' p.pk %}">{{ p.name }}</a></h3><div class="star">★ {{ p.rating }}</div>
+<p><span class="price">₹{{ p.price }}</span>{% if p.old_price %}<span class="old">₹{{ p.old_price }}</span>{% endif %}</p>
+<a class="btn" href="{% url 'cart_add' p.pk %}">Add to cart</a></div></div>
+{% empty %}<p>No products found. Run <code>python manage.py seed</code>.</p>{% endfor %}</div>{% endblock %}

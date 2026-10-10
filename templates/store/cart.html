@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block content %}<h1>Shopping Cart</h1><div class="row"><div class="panel" style="flex:2;min-width:300px"><table>
+{% for i in items %}<tr><td><img src="{{ i.p.image_url }}" alt=""></td><td><b>{{ i.p.name }}</b><br>₹{{ i.p.price }}</td>
+<td class="qty"><a href="{% url 'cart_dec' i.p.pk %}">−</a> {{ i.qty }} <a href="{% url 'cart_add' i.p.pk %}">+</a></td><td><b>₹{{ i.sub }}</b></td>
+<td><a href="{% url 'cart_remove' i.p.pk %}">🗑</a></td></tr>{% empty %}<tr><td>Your cart is empty. <a href="{% url 'home' %}"><b>Continue shopping</b></a></td></tr>{% endfor %}</table></div>
+{% if items %}<div class="panel" style="flex:1;min-width:260px"><h2>Order Summary</h2><h3>Total: ₹{{ total }}</h3>
+<form method="post" action="{% url 'checkout' %}">{% csrf_token %}<textarea name="address" rows="3" placeholder="Delivery address" required></textarea><br><br>
+{% if user.is_authenticated %}<button class="btn">Place order</button>{% else %}<a class="btn" href="{% url 'login' %}?next=/cart/">Login to order</a>{% endif %}</form></div>{% endif %}</div>{% endblock %}
